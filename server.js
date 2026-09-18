@@ -1,148 +1,3 @@
-// const express = require("express");
-
-// const app = express();
-
-// app.use(express.json());
-
-// app.get("/", (req, res) => {
-//   res.json({
-//     message: "Server berhasil berjalan"
-//   });
-// });
-
-
-
-
-// // Tugas tambah endpoint get hello dan about
-// app.get("/hello", (req, res) => {
-//   res.json({
-//     message: "Hello from api"
-//   });
-// });
-// app.get("/about", (req, res) => {
-//   res.json({
-//     project: "Product Management Api"
-//   });
-// });
-
-
-
-
-
-
-// // tugas 3 
-// app.get("/api/products/:id", (req, res) => {
-//   const id = req.params.id;
-
-//   res.json({
-//     productId: id
-//   });
-// });
-
-// // app.post("/api/products", (req, res) => {
-// //   const data = req.body;
-
-// //   res.json(data);
-// // });
-
-
-
-
-
-
-// // tugas 4
-
-// let products = [
-//   {
-//     id: 1,
-//     name: "Laptop",
-//     price: 7500000,
-//     stock: 10
-//   },
-//   {
-//     id: 2,
-//     name: "Mouse",
-//     price: 150000,
-//     stock: 20
-//   },
-//   {
-//     id: 3,
-//     name: "Keyboard",
-//     price: 150000,
-//     stock: 22
-//   },
-//   {
-//     id: 4,
-//     name: "Charger",
-//     price: 150000,
-//     stock: 19
-//   }
-  
-// ];
-
-// app.get("/api/products", (req, res) => {
-//   res.json(products);
-// });
-
-
-// app.post("/api/products", (req, res) => {
-//   const product = {
-//     id: products.length + 1,
-//     name: req.body.name,
-//     price: req.body.price,
-//     stock: req.body.stock
-//   };
-
-//   products.push(product);
-
-//   res.status(201).json(product);
-// });
-
-
-// app.put("/api/products/:id", (req, res) => {
-//   const id = Number(req.params.id);
-
-//   const product = products.find(x => x.id === id);
-
-//   if (!product) {
-//     return res.status(404).json({
-//       message: "Product tidak ditemukan"
-//     });
-//   }
-
-//   product.name = req.body.name;
-//   product.price = req.body.price;
-//   product.stock = req.body.stock;
-
-//   res.json(product);
-// });
-
-
-
-// app.delete("/api/products/:id", (req, res) => {
-//   const id = Number(req.params.id);
-
-//   products = products.filter(x => x.id !== id);
-
-//   res.json({
-//     message: "Product berhasil dihapus"
-//   });
-// });
-
-
-
-
-
-
-
-
-// app.listen(3000, () => {
-//   console.log("Server berjalan di http://localhost:3000");
-// });
-
-
-
-
 const express = require("express");
 const dotenv = require("dotenv");
 
@@ -153,31 +8,19 @@ const serviceAccount = require("./firebase-service-account.json");
 
 dotenv.config();
 
-// =====================================
-// KONEKSI FIREBASE
-// =====================================
-
 initializeApp({
   credential: cert(serviceAccount),
   databaseURL: process.env.DATABASE_URL
 });
 
 const db = getDatabase();
-
-
-// =====================================
-// EXPRESS
-// =====================================
-
 const app = express();
 
 app.use(express.json());
 
 
-// =====================================
-// HOME
-// =====================================
 
+// Ubah message menjadi kalimatmu sendiri.
 app.get("/", (req, res) => {
   res.json({
     message: "Server Employee Management API berjalan"
@@ -185,11 +28,8 @@ app.get("/", (req, res) => {
 });
 
 
-// =====================================
-// TUGAS SEBELUMNYA
-// HELLO
-// =====================================
 
+//Tambahkan endpoint GET /hello.
 app.get("/hello", (req, res) => {
   res.json({
     message: "Hello from api"
@@ -197,11 +37,8 @@ app.get("/hello", (req, res) => {
 });
 
 
-// =====================================
-// TUGAS SEBELUMNYA
-// ABOUT
-// =====================================
 
+//Buat endpoint GET /about yang mengembalikan nama project.
 app.get("/about", (req, res) => {
   res.json({
     project: "Product Management Api"
@@ -209,11 +46,10 @@ app.get("/about", (req, res) => {
 });
 
 
-// =====================================
-// LEVEL 6
-// TEST FIREBASE
-// =====================================
 
+
+
+// TEST FIREBASE
 app.get("/api/test-firebase", async (req, res) => {
   try {
     const snapshot = await db.ref("test").once("value");
@@ -234,17 +70,11 @@ app.get("/api/test-firebase", async (req, res) => {
 });
 
 
-// =====================================
-// LEVEL 7
+
+
+
 // CRUD PRODUCT DENGAN FIREBASE
-// =====================================
-
-
-// =====================================
 // READ - SEMUA PRODUCT
-// GET /api/products
-// =====================================
-
 app.get("/api/products", async (req, res) => {
   try {
     const snapshot = await db.ref("products").once("value");
@@ -268,11 +98,8 @@ app.get("/api/products", async (req, res) => {
 });
 
 
-// =====================================
-// READ - PRODUCT BERDASARKAN ID
-// GET /api/products/:id
-// =====================================
 
+// READ - PRODUCT BERDASARKAN ID
 app.get("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -302,11 +129,8 @@ app.get("/api/products/:id", async (req, res) => {
 });
 
 
-// =====================================
-// CREATE - TAMBAH PRODUCT
-// POST /api/products
-// =====================================
 
+// CREATE - TAMBAH PRODUCT
 app.post("/api/products", async (req, res) => {
   try {
     const {
@@ -348,11 +172,8 @@ app.post("/api/products", async (req, res) => {
 });
 
 
-// =====================================
-// UPDATE - UBAH PRODUCT
-// PUT /api/products/:id
-// =====================================
 
+// UPDATE - UBAH PRODUCT
 app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -404,11 +225,8 @@ app.put("/api/products/:id", async (req, res) => {
 });
 
 
-// =====================================
-// DELETE - HAPUS PRODUCT
-// DELETE /api/products/:id
-// =====================================
 
+// DELETE - HAPUS PRODUCT
 app.delete("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -439,9 +257,6 @@ app.delete("/api/products/:id", async (req, res) => {
 });
 
 
-// =====================================
-// MENJALANKAN SERVER
-// =====================================
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(
